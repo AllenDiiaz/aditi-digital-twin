@@ -1,0 +1,47 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ros2-build:
+    name: ROS 2 Humble build + smoke test (stub backend)
+    runs-on: ubuntu-22.04
+    container: ros:humble
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: src/aditi
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          rosdep update
+          rosdep install --from-paths src --ignore-src -y
+
+      - name: Build
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon build --packages-select gantry_bridge \
+            --event-handlers console_direct+ \
+            --cmake-args -DGANTRY_BACKEND_SOURCES=$GITHUB_WORKSPACE/src/aditi/gantry_bridge/backends/stub_backend.cpp
+
+      - name: Smoke test (node starts and publishes joint_states)
+        run: |
+          source install/setup.bash
+          ros2 run gantry_bridge gantry_bridge_node &
+          NODE_PID=$!
+          timeout 20 ros2 topic echo --once /joint_states
+          kill $NODE_PID
+
+  python-syntax:
+    name: Python syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m py_compile isaac_extension/gantry.autopick/auto_pick/*.py tools/*.py
