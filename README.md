@@ -1,5 +1,7 @@
 # ADITI: A Digital, Interactive Twin for Industry
 
+[![build](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml/badge.svg)](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml)
+
 A bidirectional digital twin that links a physical 4-axis XYZ table to NVIDIA Isaac Sim over ROS 2.
 
 - **Shadow mode (Machine → Twin):** the simulation mirrors the machine in real time.
@@ -17,7 +19,7 @@ This is a reference implementation built as an industrial digital-twin prototype
 
 - The original version ran end to end on real hardware, as shown in the demo.
 - For publication, every call to the vendor-specific motion-control API was replaced with a hardware abstraction layer (`IMotionBackend`), and all vendor code, assets and identifiers were removed. Control logic, constants and call order were kept unchanged, apart from removing dead code, a legacy command lane and a drive-gain block that had no effect.
-- The refactored code has not been built against ROS 2 since then. To run it, you need to implement `IMotionBackend` for your own motion controller (see [Hardware abstraction layer](#hardware-abstraction-layer)).
+- Since the refactor, CI builds the bridge node against ROS 2 Humble with a stub backend and checks that it starts and publishes `joint_states`. The stub talks to no hardware, so CI verifies the build and startup only, not control behavior. To drive real hardware, implement `IMotionBackend` for your own motion controller (see [Hardware abstraction layer](#hardware-abstraction-layer)).
 - The Isaac Sim stage (USD) is not included. The scene requirements are documented below.
 
 ## System overview
@@ -90,7 +92,7 @@ colcon build --cmake-args \
   -DGANTRY_BACKEND_LIBS=<your_controller_library>
 ```
 
-Without a backend, CMake stops with an explanatory error.
+Without a backend, CMake stops with an explanatory error. [`backends/stub_backend.cpp`](gantry_bridge/backends/stub_backend.cpp) is a no-op backend used by CI: every command succeeds without effect and every axis reports `Standstill` at position 0. Passing it here builds and starts the node without hardware.
 
 ## Isaac Sim side
 
@@ -174,6 +176,8 @@ The code preserves the behavior that was validated on hardware, including its fl
 
 ```
 gantry_bridge/                 ROS 2 package (C++)
+├── backends/
+│   └── stub_backend.cpp       No-op backend for CI and hardware-free builds
 ├── include/gantry_bridge/
 │   └── motion_backend.hpp     Hardware abstraction interface
 ├── src/gantry_bridge_node.cpp Bridge node: feedback and the PTP, velocity and PVT lanes
@@ -189,6 +193,7 @@ tools/
 ├── velocity_profiler.py       Records commanded vs. actual X speed to CSV and a plot
 └── plot.py                    Re-plots a recorded CSV
 docs/                          Figures
+.github/workflows/build.yml    CI: ROS 2 build and startup smoke test, Python syntax check
 ```
 
 `velocity_profiler.py` reads `velocity[0]` from `/gantry/cmd_velocity`, so the publisher must fill in the velocity field, even though the bridge itself ignores it.
