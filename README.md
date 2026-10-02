@@ -1,7 +1,6 @@
 # ADITI: A Digital, Interactive Twin for Industry
 
 [![build](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml/badge.svg)](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml)
-[![build](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml/badge.svg)](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![ROS 2](https://img.shields.io/badge/ROS%202-Humble-22314E?logo=ros&logoColor=white)
 ![Isaac Sim](https://img.shields.io/badge/Isaac%20Sim-5.1-76B900?logo=nvidia&logoColor=white)
