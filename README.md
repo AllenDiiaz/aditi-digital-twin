@@ -1,6 +1,12 @@
 # ADITI: A Digital, Interactive Twin for Industry
 
 [![build](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml/badge.svg)](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml)
+[![build](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml/badge.svg)](https://github.com/AllenDiiaz/aditi-digital-twin/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![ROS 2](https://img.shields.io/badge/ROS%202-Humble-22314E?logo=ros&logoColor=white)
+![Isaac Sim](https://img.shields.io/badge/Isaac%20Sim-5.1-76B900?logo=nvidia&logoColor=white)
+![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 
 A bidirectional digital twin that links a physical 4-axis XYZ table to NVIDIA Isaac Sim over ROS 2.
 
