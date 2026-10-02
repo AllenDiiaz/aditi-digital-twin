@@ -1,0 +1,20 @@
+[core]
+reloadable = true
+order = 0
+
+[package]
+version = "1.0.0"
+category = "UI"
+title = "Gantry Auto Pick"
+description = "Generates S-curve pick-and-place trajectories for a gantry digital twin and streams them to hardware as PVT commands over ROS 2"
+authors = ["Bo-Wei Tsai"]
+repository = ""
+keywords = ["isaacsim", "digital-twin", "ros2", "motion-control"]
+readme = ""
+icon = ""
+
+[dependencies]
+"isaacsim.ros2.bridge" = {}
+
+[[python.module]]
+name = "auto_pick"
